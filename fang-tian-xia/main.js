@@ -82,7 +82,7 @@ function getSummary(url) {
 }
 
 // 获取其他详情
-function getAsyncDetail(url, id) {
+function getAsyncSingleDetail(url, id) {
     return requestUrl(url, id)
         .then(function (data) {
             return new Promise(function (res, rej) {
@@ -116,16 +116,23 @@ function getAsyncDetail(url, id) {
                 var comment_last = $(".Comprehensive_score .fbold14.fl").text().replace(/[^0-9]/ig, "");
 
                 allObject[id]["count"] = count;
-                allObject[id]["score"] = comment_font + "." + comment_last;
-                console.log(allObject[id]);
+                allObject[id]["score"] = Number(comment_font + "." + comment_last);
+                // console.log(allObject[id]);
                 res(allObject[id])
             })
         });
 }
 
+function getAllDetail(data) {
+    allObject = data;
+    for (var name in data) {
+        AsyncArray.push(getAsyncSingleDetail(data[name].detail, name))
+    }
+    return Promise.all(AsyncArray); // resolve(一个数组)
+}
+
 var allObject = {};
 var AsyncArray = [];
-var allDataArray = [];
 var page = [
     "/house/s/b810-b91-c3110%2C144-c9y/",
     "/house/s/b810-b92-c3110%2C144-c9y/",
@@ -137,22 +144,45 @@ var page = [
 ];
 var PageArray = [];
 
-
 function getPage(url) {
     return getSummary(url)
-        .then(function (data) {
-            allObject = data;
-            for (var name in data) {
-                AsyncArray.push(getAsyncDetail(data[name].detail, name))
-            }
-            return Promise.all(AsyncArray); // resolve(一个数组)
-        });
 }
 
-
+function mergeArray2Object(array) {
+    var data = {};
+    for (var i = 0; i < array.length; i++) {
+        data = Object.assign(data, array[i]);
+    }
+    return data;
+}
 for (var k = 0; k < page.length; k++) {
     PageArray.push(getPage(host + page[k]))
 }
 
+Promise.all(PageArray).then(function (result) {
+    return new Promise(function (res, rej) {
+        var data = mergeArray2Object(result);
+        res(data);
+    })
+}).then(getAllDetail).then(
+    function (data) {
+        data.sort(function (a, b) {
+            return a.score < b.score
+        });
+        var json = JSON.stringify(data);
+        savedContent("sortByScore", json);
+    }
+).catch(function (error) {
+    console.log("出错了：",error)
+});
 
-Promise.all(PageArray);
+
+//该函数的作用：在本地存储所爬取的json
+function savedContent(news_title, content) {
+    var time = new Date().getTime();
+    fs.appendFile('./data/' + news_title + time + '.JSON', content, 'utf-8', function (err) {
+        if (err) {
+            console.log(err);
+        }
+    });
+}

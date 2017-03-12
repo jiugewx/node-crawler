@@ -1,0 +1,24 @@
+{
+  "name": "node-crawler",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jiugewx/node-crawler.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jiugewx/node-crawler/issues"
+  },
+  "homepage": "https://github.com/jiugewx/node-crawler#readme",
+  "devDependencies": {
+    "cheerio": "^0.22.0",
+    "superagent": "^3.5.0",
+    "superagent-charset": "^1.1.1"
+  }
+}
