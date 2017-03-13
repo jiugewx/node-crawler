@@ -6,10 +6,26 @@ const request = require('superagent');
 charset(request);
 var moment = require('moment');
 var utils = require("../utils/base.js");
+var house = require("../sequelize.js");
 var host = "http://newhouse.cs.fang.com";
 
 // var url = "http://newhouse.cs.fang.com/house/s/b810-c3110%2C144-c9y/";
 var Cookie = "showAdquanguo=1; global_cookie=v187c7ws8owbnammasza0lwmk15j07gso6u; indexAdvLunbo=lb_ad5%2C0; __utmt_t0=1; __utmt_t1=1; __utmt_t2=1; sf_source=; s=; showAdcs=1; city=cs; __utmt_t3=1; __utmt_t4=1; new_search_uid=53ed90827b4a0259bddf88df77abd70c; __utma=147393320.1395782459.1489370594.1489370594.1489370594.1; __utmb=147393320.44.10.1489370594; __utmc=147393320; __utmz=147393320.1489370594.1.1.utmcsr=baidu|utmccn=(organic)|utmcmd=organic; newhouse_chat_guid=102E4B2A-2A13-CEB4-E1B6-31B4754C73DA; jiatxShopWindow=1; coderes=xJjiPHvGEyHGnUeg; Captcha=4E546151324771764C634D316432744B576A39565459704A48376A4F4655527A675557627331466E763076643642457438662F7936414D52434570385278667A32422B42663654335550383D; newhouse_user_guid=94B33913-FAB0-9695-0368-BD8260D4F5D9; unique_cookie=U_v187c7ws8owbnammasza0lwmk15j07gso6u*9";
+
+var allObject = {};
+var AsyncArray = [];
+var page = [
+    "/house/s/b810-b91-c390%2C144-c9y/",
+    "/house/s/b810-b92-c390%2C144-c9y/",
+    "/house/s/b810-b93-c390%2C144-c9y/",
+    "/house/s/b810-b94-c390%2C144-c9y/",
+    "/house/s/b810-b95-c390%2C144-c9y/",
+    "/house/s/b810-b96-c390%2C144-c9y/",
+    "/house/s/b810-b97-c390%2C144-c9y/",
+    "/house/s/b810-b98-c390%2C144-c9y/",
+    "/house/s/b810-b99-c390%2C144-c9y/"
+];
+var PageArray = [];
 
 function requestUrl(url, id) {
     return new Promise(function (resolve, reject) {
@@ -20,7 +36,11 @@ function requestUrl(url, id) {
             .end(function (err, res) {
                 if ( err ) {
                     console.log(err);
-                    reject();
+                    resolve({
+                        content: "",
+                        url: url,
+                        id: id
+                    });
                 }
                 var html = res.text;
                 resolve({
@@ -65,15 +85,16 @@ function getSummary(url) {
                     Data[id] = {
                         _id: id,
                         index: index,
-                        detail: detailTarget,
                         name: title,
                         house_type: space,
-                        keyword: keyWords,
+                        keywords: keyWords,
                         price: price,
-                        image: image
+                        image_url: image,
+                        detail_url: detailTarget
                     };
+                    console.log(Data[id]);
+                    house.create(Data[id]);
                 });
-
 
                 resolve(Data);
             });
@@ -82,31 +103,8 @@ function getSummary(url) {
 
 // 获取其他详情
 function getAsyncSingleDetail(url, id) {
-    // return requestUrl(url, id)
-    // .then(function (data) {
-    //     return new Promise(function (res, rej) {
-    //         var id = data.id;
-    //         var $ = cheerio.load(data.content, {decodeEntities: false});
-    //         var items = $(".right_box_zzlxnrl.hidden .f14");
-    //         var addressHtml = $(items[items.length - 1]);
-    //         var districtHtml = addressHtml.find("span.fl").text();
-    //         var district = districtHtml.replace(/&nbsp;/g, " ").replace(/\[|\]/g, "").split("：")[1];
-    //         var address = addressHtml.find(">a").text();
-    //         var newUrl = data.url.split("fang.com/")[0] + "fang.com/dianping/";
-    //         allObject[id]["address"] = district + address;
-    //         allObject[id]["district"] = district;
-    //         var resData = {
-    //             id: id,
-    //             url: newUrl
-    //         };
-    //
-    //         res(resData)
-    //     })
-    // })
-    // .then(function (data) {
     var newUrl = url.split("fang.com/")[0] + "fang.com/dianping/";
     return requestUrl(newUrl, id)
-    // })
         .then(function (data) {
             return new Promise(function (res, rej) {
                 var id = data.id;
@@ -115,9 +113,9 @@ function getAsyncSingleDetail(url, id) {
                 var comment_font = $(".Comprehensive_score .fbold22.fl.mgl13.mgt_2").text().trim();
                 var comment_last = $(".Comprehensive_score .fbold14.fl").text().replace(/[^0-9]/ig, "");
 
-                allObject[id]["count"] = count;
+                allObject[id]["comment"] = count;
                 allObject[id]["score"] = Number(comment_font + "." + comment_last);
-                console.log(allObject[id]);
+
                 res(allObject[id])
             })
         });
@@ -126,25 +124,11 @@ function getAsyncSingleDetail(url, id) {
 function getAllDetail(data) {
     allObject = data;
     for (var id in data) {
-        AsyncArray.push(getAsyncSingleDetail(data[id].detail, id))
+        AsyncArray.push(getAsyncSingleDetail(data[id].detail_url, id))
     }
     return Promise.all(AsyncArray); // resolve(一个数组)
 }
 
-var allObject = {};
-var AsyncArray = [];
-var page = [
-    "/house/s/b810-b91-c390%2C144-c9y/",
-    "/house/s/b810-b92-c390%2C144-c9y/",
-    "/house/s/b810-b93-c390%2C144-c9y/",
-    "/house/s/b810-b94-c390%2C144-c9y/",
-    "/house/s/b810-b95-c390%2C144-c9y/",
-    "/house/s/b810-b96-c390%2C144-c9y/",
-    "/house/s/b810-b97-c390%2C144-c9y/",
-    "/house/s/b810-b98-c390%2C144-c9y/",
-    "/house/s/b810-b99-c390%2C144-c9y/"
-];
-var PageArray = [];
 
 function getPage(url) {
     return getSummary(url)
@@ -173,7 +157,6 @@ for (var k = 0; k < page.length; k ++) {
     PageArray.push(getPage(host + page[k]))
 }
 
-//
 Promise.all(PageArray)
     .then(function (result) {
         return new Promise(function (res, rej) {
@@ -182,13 +165,8 @@ Promise.all(PageArray)
         })
     })
     .then(getAllDetail)
-    .then(function (data) {
-        data.sort(function (a, b) {
-            return a.score < b.score
-        });
-        var json = JSON.stringify(data);
-        savedContent("data", json);
-    })
     .catch(function (error) {
         console.log("出错了：", error)
     });
+
+// house.clearTable();
