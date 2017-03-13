@@ -18,6 +18,11 @@
   "homepage": "https://github.com/jiugewx/node-crawler#readme",
   "devDependencies": {
     "cheerio": "^0.22.0",
+    "co": "^4.6.0",
+    "moment": "^2.17.1",
+    "mysql": "^2.13.0",
+    "node-mysql": "^0.4.2",
+    "sequelize": "^3.30.2",
     "superagent": "^3.5.0",
     "superagent-charset": "^1.1.1"
   }
