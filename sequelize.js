@@ -59,3 +59,10 @@ exports.create = function (data) {
 exports.clearTable = function () {
     return House.sync({force:true})
 };
+
+exports.findAll = function () {
+    return House.findAll();
+};
+
+// exports.findAll();
+// exports.clearTable()
