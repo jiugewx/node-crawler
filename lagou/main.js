@@ -76,18 +76,19 @@ function getPage(page) {
 
 // 创建一个item
 function createItem(index) {
-    return new Promise(function (resolve) {
-        var item = allResults[index];
-        setTimeout(function () {
-            Web.create(item);
-            console.log(item);
-            resolve(index + 1);
-        }, 100)
+    var item = allResults[index];
+    return Web.create(item).then(function () {
+        return new Promise(function (resolve) {
+            setTimeout(function () {
+                resolve(index + 1);
+            }, 0)
+        })
     })
+
 }
 
 var pageArray = [];
-for (var j = 1; j <= 30; j ++) {
+for (var j = 1; j <= 60; j ++) {
     pageArray.push(getPage(j))
 }
 

@@ -10,7 +10,6 @@ var Web = sequelize.define(
         'company_id': {
             'type': Sequelize.STRING,     // 字段类型
             'allowNull': false,         // 是否允许为NULL
-            'unique': true              // 字段是否UNIQUE
         },
         'position_name': {
             'type': Sequelize.STRING,
@@ -59,14 +58,17 @@ var Web = sequelize.define(
 
 
 exports.create = function (data) {
-    return Web.sync()
+    return Web.sync()  //同步模型到数据库
         .then(function () {
             return Web.create(data)
+        })
+        .catch(function (err) {
+            console.log("捕获到错误",err)
         })
 };
 
 exports.clearTable = function () {
-    return Web.sync({force: true})
+    return Web.sync({force: true}) //同步模型到数据库
 };
 
 exports.findAll = function () {
