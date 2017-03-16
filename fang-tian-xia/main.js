@@ -6,7 +6,7 @@ const request = require('superagent');
 charset(request);
 var moment = require('moment');
 var utils = require("../utils/base.js");
-var house = require("../sequelize.js");
+var house = require("./house.js");
 var host = "http://newhouse.cs.fang.com";
 
 // var url = "http://newhouse.cs.fang.com/house/s/b810-c3110%2C144-c9y/";

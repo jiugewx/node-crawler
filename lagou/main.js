@@ -27,7 +27,7 @@ function requestUrl(url, page) {
             .send({kd: "web前端"})
             .send({pn: page})
             .end(function (err, res) {
-                if (err) {
+                if ( err ) {
                     console.log(err);
                     resolve({
                         content: "",
@@ -43,19 +43,21 @@ function requestUrl(url, page) {
     })
 }
 
+var allResults = [];
+
 function getPage(page) {
     return requestUrl(url, page).then(function (data) {
         var results = data.detail["content"] ? data.detail["content"]['positionResult']['result'] : [];
-        if (results.length == 0) {
+        if ( results.length == 0 ) {
             return
         }
-        for (var i = 0; i < results.length; i++) {
+        for (var i = 0; i < results.length; i ++) {
             var resultI = results[i];
             var salary = resultI.salary.replace(/k/g, "");
             var unit = {
                 work_year: resultI.workYear || "",
-                salary_min: parseInt(salary.split("-")[0]) || -1,
-                salary_max: parseInt(salary.split("-")[1]) || -1,
+                salary_min: parseInt(salary.split("-")[0]) || - 1,
+                salary_max: parseInt(salary.split("-")[1]) || - 1,
                 company_id: resultI.companyId,
                 company_full_name: resultI.companyFullName | "",
                 company_logo: resultI.companyLogo || "",
@@ -64,20 +66,40 @@ function getPage(page) {
                 position_advantage: resultI.positionAdvantage || "",
                 second_type: resultI.secondType || "",
                 district: resultI.district || "",
-                publish_time:resultI.createTime || "",
+                publish_time: resultI.createTime || "",
             };
-            console.log(unit);
-            Web.create(unit);
+            // console.log(unit);
+            allResults.push(unit);
         }
     });
 }
 
-var page = 1;
-var timer = setInterval(function () {
-    if (page >= 30) {
-        clearInterval(timer);
-    } else {
-        getPage(page);
-        page++;
+// 创建一个item
+function createItem(index) {
+    return new Promise(function (resolve) {
+        var item = allResults[index];
+        setTimeout(function () {
+            Web.create(item);
+            console.log(item);
+            resolve(index + 1);
+        }, 100)
+    })
+}
+
+var pageArray = [];
+for (var j = 1; j <= 30; j ++) {
+    pageArray.push(getPage(j))
+}
+
+
+Promise.all(pageArray).then(function () {
+    var itemIndexs = [];
+    for (var i = 0; i < allResults.length; i ++) {
+        itemIndexs.push(i);
     }
-}, 3000 + Math.ceil(Math.random() * 3000));
+    console.log(allResults.length);
+    var result = Promise.resolve(0);// 从0开始
+    itemIndexs.forEach(function () {
+        result = result.then(createItem)
+    });
+});

@@ -74,4 +74,4 @@ exports.findAll = function () {
 };
 
 // exports.findAll();
-// exports.clearTable();
+exports.clearTable();
