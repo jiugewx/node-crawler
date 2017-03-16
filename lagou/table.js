@@ -7,35 +7,24 @@ var sequelize = new Sequelize('job', 'root', '');
 var Web = sequelize.define(
     'job_modal',
     {
-        'company_id': {
+        'position_id': {
             'type': Sequelize.STRING,     // 字段类型
             'allowNull': false,         // 是否允许为NULL
+            "unique":true,
+        },
+        'city': {
+            'type': Sequelize.STRING,
+            'allowNull': true
+        },
+        "district":{
+            'type': Sequelize.STRING,
+            'allowNull': true
         },
         'position_name': {
             'type': Sequelize.STRING,
             'allowNull': false
         },
-        'position_advantage': {
-            'type': Sequelize.STRING,
-            'allowNull': false
-        },
-        'second_type': {
-            'type': Sequelize.STRING,
-            'allowNull': true
-        },
-        "company_full_name": {
-            'type': Sequelize.STRING,
-            'allowNull': true
-        },
         "company_short_name": {
-            'type': Sequelize.STRING,
-            'allowNull': true
-        },
-        "company_logo": {
-            'type': Sequelize.STRING,
-            'allowNull': false
-        },
-        "work_year": {
             'type': Sequelize.STRING,
             'allowNull': true
         },
@@ -50,7 +39,36 @@ var Web = sequelize.define(
         "publish_time":{
             'type': Sequelize.STRING,
             'allowNull': true
-        }
+        },
+        'position_advantage': {
+            'type': Sequelize.STRING,
+            'allowNull': false
+        },
+        'company_id': {
+            'type': Sequelize.STRING,     // 字段类型
+            'allowNull': false,         // 是否允许为NULL
+        },
+        "company_logo": {
+            'type': Sequelize.STRING,
+            'allowNull': false
+        },
+
+        "work_year": {
+            'type': Sequelize.STRING,
+            'allowNull': true
+        },
+        "finance_stage":{
+            'type': Sequelize.STRING,
+            'allowNull': true
+        },
+        'second_type': {
+            'type': Sequelize.STRING,
+            'allowNull': true
+        },
+        "company_full_name": {
+            'type': Sequelize.STRING,
+            'allowNull': true
+        },
     }, {
         "tableName": 'Web_job'
     }
@@ -68,7 +86,7 @@ exports.create = function (data) {
 };
 
 exports.clearTable = function () {
-    return Web.sync({force: true}) //同步模型到数据库
+    return Web.sync({force: true});//同步模型到数据库
 };
 
 exports.findAll = function () {
@@ -76,4 +94,4 @@ exports.findAll = function () {
 };
 
 // exports.findAll();
-exports.clearTable();
+// exports.clearTable();
