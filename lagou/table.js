@@ -7,65 +7,63 @@ var sequelize = new Sequelize('job', 'root', '');
 var Web = sequelize.define(
     'job_modal',
     {
-        'position_id': {
-            'type': Sequelize.STRING,     // 字段类型
-            'allowNull': false,         // 是否允许为NULL
-            "unique":true,
-        },
         'city': {
             'type': Sequelize.STRING,
             'allowNull': true
         },
-        "district":{
+        "district": {
             'type': Sequelize.STRING,
             'allowNull': true
         },
-        'position_name': {
-            'type': Sequelize.STRING,
-            'allowNull': false
-        },
-        "company_short_name": {
-            'type': Sequelize.STRING,
-            'allowNull': true
-        },
-        "salary_min": {
+        "sal_min": {
             'type': Sequelize.INTEGER,
             'allowNull': true
         },
-        "salary_max": {
+        "sal_max": {
             'type': Sequelize.INTEGER,
             'allowNull': true
         },
-        "publish_time":{
-            'type': Sequelize.STRING,
+        "wok_min": {
+            'type': Sequelize.INTEGER,
             'allowNull': true
         },
-        'position_advantage': {
+        "wok_max": {
+            'type': Sequelize.INTEGER,
+            'allowNull': true
+        },
+        "com_min": {
+            'type': Sequelize.INTEGER,
+            'allowNull': true
+        },
+        "com_max": {
+            'type': Sequelize.INTEGER,
+            'allowNull': true
+        },
+        'pos_name': {
             'type': Sequelize.STRING,
             'allowNull': false
         },
-        'company_id': {
-            'type': Sequelize.STRING,     // 字段类型
-            'allowNull': false,         // 是否允许为NULL
+        "com_name": {
+            'type': Sequelize.STRING,
+            'allowNull': true
         },
-        "company_logo": {
+        "pub_time": {
+            'type': Sequelize.STRING,
+            'allowNull': true,
+        },
+        'pos_advantage': {
             'type': Sequelize.STRING,
             'allowNull': false
         },
-
-        "work_year": {
+        "com_logo": {
+            'type': Sequelize.STRING,
+            'allowNull': false
+        },
+        "fin_stage": {
             'type': Sequelize.STRING,
             'allowNull': true
         },
-        "finance_stage":{
-            'type': Sequelize.STRING,
-            'allowNull': true
-        },
-        'second_type': {
-            'type': Sequelize.STRING,
-            'allowNull': true
-        },
-        "company_full_name": {
+        'sec_type': {
             'type': Sequelize.STRING,
             'allowNull': true
         },
@@ -81,7 +79,7 @@ exports.create = function (data) {
             return Web.create(data)
         })
         .catch(function (err) {
-            console.log("捕获到错误",err)
+            console.log("捕获到错误", err)
         })
 };
 
