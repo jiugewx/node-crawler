@@ -39,6 +39,10 @@ var Web = sequelize.define(
             'type': Sequelize.INTEGER,
             'allowNull': true
         },
+        "fin_stage": {
+            'type': Sequelize.STRING,
+            'allowNull': true
+        },
         'pos_name': {
             'type': Sequelize.STRING,
             'allowNull': false
@@ -50,28 +54,28 @@ var Web = sequelize.define(
         "pub_time": {
             'type': Sequelize.STRING,
             'allowNull': true,
+            "unique":true               // 以发布时间为唯一识别
         },
         'pos_advantage': {
             'type': Sequelize.STRING,
             'allowNull': false
         },
-        "com_logo": {
+        "det_url":{
             'type': Sequelize.STRING,
             'allowNull': false
         },
-        "fin_stage": {
+        "skill": {
             'type': Sequelize.STRING,
-            'allowNull': true
-        },
-        'sec_type': {
-            'type': Sequelize.STRING,
-            'allowNull': true
-        },
+            'allowNull': false
+        }
     }, {
         "tableName": 'Web_job'
     }
 );
 
+exports.clearTable = function () {
+    return Web.sync({force: true});//同步模型到数据库
+};
 
 exports.create = function (data) {
     return Web.sync()  //同步模型到数据库
@@ -79,12 +83,18 @@ exports.create = function (data) {
             return Web.create(data)
         })
         .catch(function (err) {
-            console.log("捕获到错误", err)
+            console.log("create错误", err)
         })
 };
 
-exports.clearTable = function () {
-    return Web.sync({force: true});//同步模型到数据库
+exports.update = function (data) {
+    return Web.sync()  //同步模型到数据库
+        .then(function () {
+            return Web.update(data)
+        })
+        .catch(function (err) {
+            console.log("update错误", err)
+        })
 };
 
 exports.findAll = function () {

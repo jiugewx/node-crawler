@@ -53,22 +53,25 @@ function getPage(params) {
             var salary = resultI.salary.replace(/k/g, "");
             var workyear = resultI.workYear.replace(/年/g, "");
             var size = resultI.companySize.replace(/人/g, "");
+            var position_id = resultI.positionId || "";
+            var detail_url = position_id ? "https://www.lagou.com/jobs/" + position_id + ".html" : "";
             var unit = {
-                wok_min: parseInt(workyear.split("-")[0]) || -1,
-                wok_max: parseInt(workyear.split("-")[1]) || -1,
-                sal_min: parseInt(salary.split("-")[0]) || -1,
-                sal_max: parseInt(salary.split("-")[1]) || -1,
-                com_min: parseInt(size.split("-")[0]) || -1,
-                com_max: parseInt(size.split("-")[1]) || -1,
-                com_logo: resultI.companyLogo || "",
-                com_name: resultI.companyShortName || "",
-                pos_name: resultI.positionName || "",
-                pos_advantage: resultI.positionAdvantage || "",
-                sec_type: resultI.secondType || "",
-                pub_time: resultI.createTime || "",
-                fin_stage: resultI.financeStage || "",
-                city: resultI.city || "",
-                district: resultI.district || ""
+                wok_min: parseInt(workyear.split("-")[0]) || -1,    // 工作最低年限
+                wok_max: parseInt(workyear.split("-")[1]) || -1,    // 工作最高年限
+                sal_min: parseInt(salary.split("-")[0]) || -1,      // 薪水最低水平
+                sal_max: parseInt(salary.split("-")[1]) || -1,      // 薪水最高水准
+                com_min: parseInt(size.split("-")[0]) || -1,        // 公司人员规模下限值
+                com_max: parseInt(size.split("-")[1]) || -1,        // 公司人员规模上限值
+                com_logo: resultI.companyLogo || "",                // 公司的logo
+                com_name: resultI.companyShortName || "",           // 公司名称
+                pos_name: resultI.positionName || "",               // 职位名称
+                pos_advantage: resultI.positionAdvantage || "",     // 职位福利
+                det_url: detail_url,                                // 岗位详情
+                skill:"",                                           // 技能
+                pub_time: resultI.createTime || "",                 // 发布时间
+                fin_stage: resultI.financeStage || "",              // 财务状况
+                city: resultI.city || "",                           // 城市
+                district: resultI.district || ""                    // 地区
             };
             _thisPageResult.push(unit);
         }
@@ -107,11 +110,11 @@ function getPage(params) {
 var pageArray = [];
 var max = 20;
 var citys = ["深圳", "杭州", "北京", "上海"];
-for (var j = 3; j < citys.length; j++) {
+for (var j = 0; j < citys.length; j++) {
     for (var i = 1; i <= max; i++) {
         var data = {
-            page: i,
-            city: citys[j]
+            city: citys[j],
+            page: i
         };
         pageArray.push(data)
     }
