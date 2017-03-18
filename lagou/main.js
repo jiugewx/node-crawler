@@ -8,7 +8,7 @@ var moment = require('moment');
 var utils = require("../utils/base.js");
 var Web = require("./table.js");
 var url = "https://www.lagou.com/jobs/positionAjax.json";
-var Cookie = "user_trace_token=20170315214040-5a26f06f8db24054a17c38f49265d2a0; LGUID=20170315214041-fb2a31d3-0984-11e7-b827-525400f775ce; index_location_city=%E6%B7%B1%E5%9C%B3; JSESSIONID=992CB08C67531377A9E900194C24062E; Hm_lvt_4233e74dff0ae5bd0a3d81c6ccf756e6=1489585241,1489585763,1489593874,1489671493; Hm_lpvt_4233e74dff0ae5bd0a3d81c6ccf756e6=1489671493; _ga=GA1.2.809627160.1489585241; _gat=1; LGSID=20170316213813-cd40816c-0a4d-11e7-94c7-5254005c3644; PRE_UTM=; PRE_HOST=www.baidu.com; PRE_SITE=https%3A%2F%2Fwww.baidu.com%2Flink%3Furl%3DCuKZZAOIooFdwnX2L42p7PPpBs8Veti3X2QpdlNMuF3%26wd%3D%26eqid%3Dafa53ace0000aa690000000358ca9540; PRE_LAND=https%3A%2F%2Fwww.lagou.com%2F; LGRID=20170316213813-cd4083c0-0a4d-11e7-94c7-5254005c3644; TG-TRACK-CODE=index_navigation; SEARCH_ID=64f8c39add19401c950cf29bc7c26634";
+var Cookie = "user_trace_token=20170315214040-5a26f06f8db24054a17c38f49265d2a0; LGUID=20170315214041-fb2a31d3-0984-11e7-b827-525400f775ce; showExpriedIndex=1; showExpriedCompanyHome=1; showExpriedMyPublish=1; hasDeliver=131; index_location_city=%E4%B8%8A%E6%B5%B7; JSESSIONID=889455F41D65752757A59B68DD017643; _gat=1; PRE_UTM=; PRE_HOST=www.baidu.com; PRE_SITE=https%3A%2F%2Fwww.baidu.com%2Flink%3Furl%3DFAHTHFvmAgxX-C-fQPArf6nQ-NfK0lgFkXTo07NRyXm%26wd%3D%26eqid%3D95fff752000bf3150000000358ccdd42; PRE_LAND=https%3A%2F%2Fwww.lagou.com%2F; TG-TRACK-CODE=index_navigation; SEARCH_ID=fa0bcd47b6404c0789e7aab1d80f6fc1; Hm_lvt_4233e74dff0ae5bd0a3d81c6ccf756e6=1489759985,1489763898,1489805728,1489821000; Hm_lpvt_4233e74dff0ae5bd0a3d81c6ccf756e6=1489821015; LGSID=20170318151000-e6c6ff31-0ba9-11e7-8723-525400f775ce; LGRID=20170318151014-ef326c81-0ba9-11e7-94fb-5254005c3644; _ga=GA1.2.809627160.1489585241"
 
 function requestUrl(url, page, city) {
     return new Promise(function (resolve, reject) {
@@ -108,7 +108,7 @@ function getPage(params) {
 
 
 var pageArray = [];
-var max = 20;
+var max = 30;
 var citys = ["深圳", "杭州", "北京", "上海"];
 for (var j = 0; j < citys.length; j++) {
     for (var i = 1; i <= max; i++) {
