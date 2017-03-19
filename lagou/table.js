@@ -138,9 +138,9 @@ function getResultFromRedis(options) {
 // 中转逻辑
 function transition(data) {
     if (!data.result.length) {
-        console.log("transition => getResultFromSql");
-        return getResultFromSql(data.options)
-            .then(setResultToRedis);
+        console.log("transition => 从sql获取");
+        return getResultFromSql(data)
+            .then(setResultToRedis)
     } else {
         console.log("transition => 从redis获取");
         console.log("从redis获取！");
@@ -148,7 +148,8 @@ function transition(data) {
     }
 }
 
-function getResultFromSql(options) {
+function getResultFromSql(data) {
+    var options = data.options;
     return Web.findAll(options)
         .then(function (results) {
             return new Promise(function (resolve, rej) {
@@ -182,6 +183,7 @@ function outPutResult(data) {
 }
 
 
+// 业务代码
 function findCity(cityName) {
     if (!cityName) {
         console.log("没有找到" + cityName);
@@ -213,6 +215,6 @@ function findCity(cityName) {
     });
 }
 
-findCity("深圳");
+// findCity("北京");
 // exports.findAll();
-// exports.clearTable();
+exports.clearTable();
