@@ -1,6 +1,6 @@
 var Sequelize = require('sequelize');
 var moment = require('moment');
-var sequelize = new Sequelize('job', 'root', '');
+var sequelize = new Sequelize('job', 'root', 'xinye');
 var clientRedis = require("../redis/redis.js");
 
 // 建表模型
@@ -213,6 +213,6 @@ function findCity(cityName) {
     });
 }
 
-findCity("深圳");
+// findCity("深圳");
 // exports.findAll();
 // exports.clearTable();
