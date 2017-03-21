@@ -50,9 +50,9 @@ function getPage(params) {
         var _thisPageResult = [];
         for (var i = 0; i < results.length; i++) {
             var resultI = results[i];
-            var salary = resultI.salary.replace(/k/g, "");
-            var workyear = resultI.workYear.replace(/年/g, "");
-            var size = resultI.companySize.replace(/人/g, "");
+            var salary = resultI.salary ? resultI.salary.replace(/k/g, "") : "-";
+            var workyear = resultI.workYear ? resultI.workYear.replace(/年/g, "") : "-";
+            var size = resultI.companySize ? resultI.companySize.replace(/人/g, ""): "-";
             var position_id = resultI.positionId || "";
             var detail_url = position_id ? "https://www.lagou.com/jobs/" + position_id + ".html" : "";
             var unit = {
