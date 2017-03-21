@@ -1,6 +1,6 @@
 var Sequelize = require('sequelize');
 var moment = require('moment');
-var sequelize = new Sequelize('job', 'root', 'xinye');
+var sequelize = new Sequelize('job', 'root', '');
 var clientRedis = require("../redis/redis.js");
 
 // 建表模型

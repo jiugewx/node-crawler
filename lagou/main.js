@@ -73,6 +73,7 @@ function getPage(params) {
                 city: resultI.city || "",                           // 城市
                 district: resultI.district || ""                    // 地区
             };
+            console.log(unit);
             _thisPageResult.push(unit);
         }
 
@@ -108,7 +109,7 @@ function getPage(params) {
 
 
 var pageArray = [];
-var max = 30;
+var max = 3;
 var citys = ["深圳", "杭州", "北京", "上海"];
 for (var j = 0; j < citys.length; j++) {
     for (var i = 1; i <= max; i++) {
